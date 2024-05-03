@@ -1,0 +1,5 @@
+Decision Justifications:
+    1. I Think RESTful API is good enough to handle API requests by a few users, at least during the MVP phase. So, I use RESTful API for the Persons Service and Connections Service 
+    2. Locations Service has a high load increase, it communicates via gRPC.
+    3. Locations should be gathered simultaneously by mobile devices, it is necessary to use a message queue such as Kafka
+in this case. This way system can process incoming Locations in batches and avoid losing them during downtime
