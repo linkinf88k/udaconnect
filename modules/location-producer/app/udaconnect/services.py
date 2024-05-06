@@ -1,10 +1,16 @@
-import time
+import time, json
 from concurrent import futures
 
 import grpc
 import location_pb2
 import location_pb2_grpc
+from kafka import KafkaProducer
 
+
+TOPIC_NAME = 'location'
+KAFKA_SERVER = 'kafka-service:9092'
+
+producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
 
 class LocationService(location_pb2_grpc.LocationServiceServicer):
     def Create(self, request, context):
@@ -15,9 +21,9 @@ class LocationService(location_pb2_grpc.LocationServiceServicer):
             "longitude": request.longitude
         }
 
-        print(location)
-        # producer.send("location", location)
-        # producer.flush()
+        bytes_value = json.dumps(location).encode('utf-8')
+        producer.send(TOPIC_NAME, bytes_value)
+        producer.flush()
         return location_pb2.LocationMessage(**location)
 
 # Initialize gRPC server

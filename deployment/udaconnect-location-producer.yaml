@@ -32,6 +32,6 @@ spec:
         service: udaconnect-location-producer
     spec:
       containers:
-      - image: linkinf88k/location-producer:latest
+      - image: linkinf88k/udaconnect-location-producer:latest
         name: location-producer
         imagePullPolicy: Always
